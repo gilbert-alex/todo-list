@@ -1,0 +1,26 @@
+.test {
+    border: 1px solid red;
+}
+
+body {
+    display: flex;
+
+}
+
+#sidebar {
+    flex: 1;
+}
+
+#content {
+    display: flex;
+    flex: 5;
+    gap: 10px;
+    flex-wrap: wrap;
+
+}
+
+card {
+    min-width: 200px;
+    height: 200px;
+    background-color: grey;
+}
