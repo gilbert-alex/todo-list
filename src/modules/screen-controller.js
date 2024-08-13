@@ -1,18 +1,46 @@
-// DOM utilities
+// screen-controller.js
 
-export function listProjects(element, arr) {
-    arr.map( (a, index) => {
+import {createNewContainer, addToContainer} from './dom-util'
 
-        const div = document.createElement('div');
-        div.classList.add('project');
-        div.dataset.index = index;
-        div.textContent = a;
-        element.appendChild(div);
-    })
+// A list of unique project values
+export function fillNavigation(projects) {
+    const container = document.getElementById('project-sidebar');
+    projects.map(project => {
+        addToContainer(container, project.name);
+    });
 }
 
-export function addToContainer(container, item, element = 'div') {
-    const div = document.createElement(element);
-    div.textContent = item;
-    container.appendChild(div);
+
+// main function to fill content container with all projects
+// and task titles
+export function fillContent(projects) {
+    const container = document.getElementById('content');
+    projects.map( project => {
+
+        const newCard = createNewContainer(
+            'card', 
+            project.getSelf().name, 
+            'project')
+
+        project.getSelf().tasks.map(task => {
+            addToContainer(
+                newCard, 
+                task.name, 
+                'p');
+
+        });
+        container.appendChild(newCard);
+    });
+}
+
+
+export function logTaskInfo(projects) {
+    projects.map( project => {
+        console.group;
+        console.log(project.getSelf().name);
+        project.getSelf().tasks.map( task => {
+            console.log(task.name);
+        });
+        console.groupEnd;
+    })
 }

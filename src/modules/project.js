@@ -1,3 +1,4 @@
+// project.js
 import Todo from './todo'
 
 export default class Project {
@@ -13,19 +14,23 @@ export default class Project {
         return this.#name;
     }
 
-    addTask(todo) {
-        if (todo instanceof Todo) {
-            this.#tasks.push(todo);
+    get tasks() {
+        return this.#tasks;
+    }
+
+    getSelf() {
+        return {
+            name: this.name,
+            tasks: this.tasks
+        };
+    }
+
+    addTask(newTodo) {
+        if (newTodo instanceof Todo) {
+            this.#tasks.push(newTodo);
         } else {
-            console.log('Invalid todo instance');
+            console.log('Invalid Todo instance');
         }
     }
-
-    taskTitles() {
-        return this.#tasks.map( t => {return t.title});
-    }
-
-    taskDetails() {
-        return this.#tasks.map( t => {return t.getInfo()});
-    }
+    
 }

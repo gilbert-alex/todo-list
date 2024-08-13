@@ -1,15 +1,17 @@
 import './style.css';
 
-import Project from './modules/project'
 import Todo from './modules/todo'
-import {listProjects, addToContainer} from './modules/screen-controller'
+import Project from './modules/project'
+import {fillNavigation, fillContent} from './modules/screen-controller'
+import {logTaskInfo} from './modules/screen-controller';
 
 const projects = [];
 
-const birdhouse = new Project('birdhouse');
-const laundry = new Project('laundry');
+const birdhouse = new Project('Build a birdhouse')
 projects.push(birdhouse);
-projects.push(laundry);
+
+const getReady = new Project('Get ready for day')
+projects.push(getReady);
 
 const measure = new Todo(
     'measure wood',
@@ -19,20 +21,23 @@ const measure = new Todo(
 );
 
 const cutWood = new Todo(
-    'cut wood to measurement',
+    'cut wood',
     'be sure you measured twice',
     'tomorrow',
     'medium',
 )
 
+const shower = new Todo(
+    'shower',
+    'can\'t smell bad',
+    'morning',
+    'high',
+)
+
 birdhouse.addTask(measure);
 birdhouse.addTask(cutWood);
+getReady.addTask(shower);
 
-// listProjects(document.getElementById('content'), birdhouse.taskTitles());
-
-console.log(birdhouse.taskDetails());
-
-projects.map( project => {
-    addToContainer( document.getElementById('sidebar'), project.name);
-})
-
+// DOM functions
+fillNavigation(projects);
+fillContent(projects);

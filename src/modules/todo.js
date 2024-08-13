@@ -1,29 +1,41 @@
-
+// todo.js
 
 export default class Todo {
-    #title;
+    #name;
     #description;
     #dueDate;
     #priority;
 
-    constructor(title, description, dueDate, priority) {
-        this.#title = title;
+    constructor(name, description, dueDate, priority) {
+        this.#name = name;
         this.#description = description;
         this.#dueDate = dueDate;
         this.#priority = priority;
     }
 
-    get title() {
-        console.log('class getter method fired');
-        return this.#title;
+    get name() {
+        return this.#name;
     }
 
+    get description() {
+        return this.#description;
+    }
+
+    get dueDate() {
+        return this.#dueDate;
+    }
+
+    get priority() {
+        return this.#priority;
+    }
+
+    // returns an objects
     getInfo() {
         return {
-            title: this.#title,
-            description: this.#description,
-            dueDate: this.#dueDate,
-            priority: this.#priority
+            name: this.name,
+            description: this.description,
+            dueDate: this.dueDate,
+            priority: this.priority
         };
     }
 }
