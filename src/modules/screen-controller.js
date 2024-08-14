@@ -2,6 +2,21 @@
 
 import {createNewContainer, addToContainer} from './dom-util'
 
+// init functionality
+export function init() {
+    const modal = document.querySelector('dialog');
+
+    const newProjectOpen = document.getElementById('newProjectOpen');
+    newProjectOpen.addEventListener('click', () => {
+        modal.showModal();
+    })
+
+    const newProjectClose = document.getElementById('newProjectClose');
+    newProjectClose.addEventListener('click', () => {
+        modal.close();
+    })
+}
+
 // A list of unique project values
 export function fillNavigation(projects) {
     const container = document.getElementById('project-sidebar');
@@ -18,29 +33,11 @@ export function fillContent(projects) {
     projects.map( project => {
 
         const newCard = createNewContainer(
-            'card', 
-            project.getSelf().name, 
-            'project')
+            'card', project.toObject().name, 'project')
 
-        project.getSelf().tasks.map(task => {
-            addToContainer(
-                newCard, 
-                task.name, 
-                'p');
-
-        });
+        project.toObject().tasks.map(task => 
+            addToContainer(newCard, task.name, 'p')
+        );
         container.appendChild(newCard);
     });
-}
-
-
-export function logTaskInfo(projects) {
-    projects.map( project => {
-        console.group;
-        console.log(project.getSelf().name);
-        project.getSelf().tasks.map( task => {
-            console.log(task.name);
-        });
-        console.groupEnd;
-    })
 }

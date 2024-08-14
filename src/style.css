@@ -46,3 +46,8 @@ body {
         text-transform: none;
     }
 }
+
+dialog {
+    margin: auto;
+    padding: 50px;
+}

@@ -18,11 +18,17 @@ export default class Project {
         return this.#tasks;
     }
 
-    getSelf() {
+    toObject() {
         return {
             name: this.name,
-            tasks: this.tasks
+            tasks: this.tasks.map( task => {
+                return task.getInfo();
+            })
         };
+    }
+
+    toJSON() {
+        return JSON.stringify(this.toObject());
     }
 
     addTask(newTodo) {
@@ -32,5 +38,5 @@ export default class Project {
             console.log('Invalid Todo instance');
         }
     }
-    
+
 }

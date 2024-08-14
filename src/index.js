@@ -3,7 +3,9 @@ import './style.css';
 import Todo from './modules/todo'
 import Project from './modules/project'
 import {fillNavigation, fillContent} from './modules/screen-controller'
-import {logTaskInfo} from './modules/screen-controller';
+import {init} from './modules/screen-controller'
+
+init();
 
 const projects = [];
 
@@ -41,3 +43,8 @@ getReady.addTask(shower);
 // DOM functions
 fillNavigation(projects);
 fillContent(projects);
+
+
+console.log(birdhouse.toJSON());
+
+
