@@ -1,17 +1,24 @@
 // DOM utilities
 
-export function createNewContainer(element, name, newClass) {
+export function createNewContainer(element = 'div', name = '', index = '', newClass = '') {
     const newElement = document.createElement(element);
-    newElement.textContent = name;
-    newElement.classList.add(newClass);
-    const id = name.replaceAll(' ','-').toLowerCase();
-    newElement.classList.add(id);
+    if (name) {
+        newElement.textContent = name;
+        newElement.dataset.name = name.replaceAll(' ','-').toLowerCase();
+    }
+    if (index || index === 0) {
+        newElement.dataset.index = index;
+    }
+    if (newClass) {
+        newElement.classList.add(newClass);
+    }
     return newElement;
 }
 
-export function addToContainer(container, item, element = 'div') {
+export function addToContainer(container, item, index, element = 'div') {
     const newElement = document.createElement(element);
     newElement.textContent = item;
+    newElement.dataset.index = index;
     container.appendChild(newElement);
 }
 

@@ -13,8 +13,8 @@ export function fillNavigation(projectList) {
         container.removeChild(container.lastChild);
     };
 
-    projectList.map(project => {
-        addToContainer(container, project.name);
+    projectList.map((project, index) => {
+        addToContainer(container, project.name, index);
     });
 }
 
@@ -28,13 +28,32 @@ export function fillContent(projectList) {
         container.removeChild(container.lastChild);
     };
 
-    projectList.map( project => {
-        const newCard = createNewContainer(
-            'card', project.toObject().name, 'project')
-        project.toObject().tasks.map(task => 
-            addToContainer(newCard, task.name, 'p')
+    projectList.map((project, index)=> {
+        const projectDiv = document.createElement('div');
+        projectDiv.dataset.index = index;
+        projectDiv.classList.add('project');
+
+        const header = document.createElement('div');
+        header.classList.add('header');
+
+        const title = document.createElement('h3')
+        title.textContent = project.toObject().name;
+        header.appendChild(title);
+
+        const editBtn = document.createElement('button');
+        editBtn.textContent = 'edit';
+        editBtn.dataset.index = index;
+        header.appendChild(editBtn);
+
+        projectDiv.appendChild(header);
+
+        const dataDiv = document.createElement('div');
+        project.toObject().tasks.map((task, index) => 
+            addToContainer(dataDiv, task.name, index, 'p')
         );
-        container.appendChild(newCard);
+        projectDiv.appendChild(dataDiv);
+    
+        container.appendChild(projectDiv);
     });
 }
 
