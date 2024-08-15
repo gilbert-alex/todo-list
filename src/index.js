@@ -3,17 +3,12 @@ import './style.css';
 import Todo from './modules/todo'
 import Project from './modules/project'
 import {fillNavigation, fillContent} from './modules/screen-controller'
-import {init} from './modules/screen-controller'
+import {initNewProject} from './modules/screen-controller'
 
-init();
-
-const projects = [];
+export const projectList = [];
 
 const birdhouse = new Project('Build a birdhouse')
-projects.push(birdhouse);
-
 const getReady = new Project('Get ready for day')
-projects.push(getReady);
 
 const measure = new Todo(
     'measure wood',
@@ -41,10 +36,9 @@ birdhouse.addTask(cutWood);
 getReady.addTask(shower);
 
 // DOM functions
-fillNavigation(projects);
-fillContent(projects);
+initNewProject();
+fillNavigation(projectList);
+fillContent(projectList);
 
-
-console.log(birdhouse.toJSON());
 
 

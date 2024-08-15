@@ -1,4 +1,6 @@
 // project.js
+
+import {projectList} from '../index'
 import Todo from './todo'
 
 export default class Project {
@@ -8,10 +10,17 @@ export default class Project {
     constructor(name) {
         this.#name = name;
         this.#tasks = [];
+
+        // add this to array in global namespace
+        projectList.push(this);
     }
 
     get name() {
         return this.#name;
+    }
+
+    set name(name) {
+        this.#name = name;
     }
 
     get tasks() {

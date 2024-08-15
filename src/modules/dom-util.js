@@ -14,3 +14,7 @@ export function addToContainer(container, item, element = 'div') {
     newElement.textContent = item;
     container.appendChild(newElement);
 }
+
+// export function closeDialog(dialog) {
+
+// }

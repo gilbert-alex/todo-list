@@ -17,16 +17,32 @@ export default class Todo {
         return this.#name;
     }
 
+    set name(name) {
+        this.#name = name;
+    }
+
     get description() {
         return this.#description;
+    }
+
+    set description(description) {
+        this.#description = this.#description;
     }
 
     get dueDate() {
         return this.#dueDate;
     }
 
+    set dueDate(dueDate) {
+        this.#dueDate = dueDate;
+    }
+
     get priority() {
         return this.#priority;
+    }
+
+    set priority(priority) {
+        this.#priority = priority;
     }
 
     // returns an objects

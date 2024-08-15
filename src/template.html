@@ -7,7 +7,7 @@
 </head>
 <body>
     <nav id="sidebar">
-        <button id="newProjectOpen">New Project</button>
+        <button id="newProjectBtn">New Project</button>
 
         <div id="project-sidebar">
             Projects
@@ -19,9 +19,12 @@
         
     </div>
 
-    <dialog>
-        <p>this is inside the dialog</p>
-        <button id="newProjectClose">close</button>
+    <dialog id="newProjectDialog">
+        <form action="" method="dialog" id="newProjectForm">
+            <label for="newProject-name">Enter name for new project:</label>
+            <input type="text" name="name" id="newProject-name">
+            <button class="close">Close</button>
+        </form>
     </dialog>
 
 </body>
