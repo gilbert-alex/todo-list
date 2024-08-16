@@ -3,7 +3,7 @@ import './style.css';
 import Todo from './modules/todo'
 import Project from './modules/project'
 import {fillNavigation, fillContent} from './modules/screen-controller'
-import {initNewProject} from './modules/screen-controller'
+import {initNewProject, initSave, editProject} from './modules/screen-controller'
 
 export const projectList = [];
 
@@ -37,6 +37,8 @@ getReady.addTask(shower);
 
 // DOM functions
 initNewProject();
+initSave();
+editProject();
 fillNavigation(projectList);
 fillContent(projectList);
 

@@ -73,4 +73,13 @@ dialog {
             width: 50px;
         }
     }
+
+    #editProjectForm {
+        display: flex;
+        flex-direction: column;
+
+        *:nth-child(odd) {
+            margin-top: 5px;
+        }
+    }
 }

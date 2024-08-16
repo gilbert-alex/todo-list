@@ -58,6 +58,9 @@ export function fillContent(projectList) {
 }
 
 // Nav buttons
+// ----------------------------------------------------------------------------
+
+// Create new project object on global array and refresh view
 export function initNewProject() {
     const open = document.getElementById('newProjectBtn');
     const modal = document.querySelector('#newProjectDialog');
@@ -76,4 +79,38 @@ export function initNewProject() {
         fillNavigation(projectList);
         fillContent(projectList);
     })
+}
+
+// Save global projectList to local storage
+export function initSave() {
+    const saveBtn = document.querySelector('#saveBtn');
+    saveBtn.addEventListener('click', () => {
+        projectList.map( pl => {
+            window.localStorage.setItem(
+                pl.toObject().name,
+                pl.toObject().tasks
+            )
+    });
+        console.log(window.localStorage);
+    })
+}
+
+// Edit existing project
+export function editProject() {
+    const content = document.querySelector('#content');
+    const modal = document.querySelector('#editProjectDialog');
+    const inputs = modal.querySelectorAll('input');
+
+    content.addEventListener('click', e => {
+        const target = e.target
+        const index = target.dataset.index
+
+        inputs.forEach( input => {
+            const targetValue = input.name;
+            input.value = projectList[index].toObject().tasks[0][targetValue];
+        });
+
+        modal.showModal();
+    })
+
 }

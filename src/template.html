@@ -7,6 +7,7 @@
 </head>
 <body>
     <nav id="sidebar">
+        <button id="saveBtn">Save Projects</button>
         <button id="newProjectBtn">New Project</button>
 
         <div id="project-sidebar">
@@ -24,6 +25,20 @@
             <label for="newProject-name">Enter name for new project:</label>
             <input type="text" name="name" id="newProject-name">
             <button class="close">Close</button>
+        </form>
+    </dialog>
+
+    <dialog id="editProjectDialog">
+        <form action="" method="dialog" id="editProjectForm">
+            <label for="todo-name">Name:</label>
+            <input type="text" name="name" id="todo-name">
+            <label for="todo-desc">Description:</label>
+            <input type="text" name="description" id="todo-desc">
+            <label for="todo-dueDate">Due Date:</label>
+            <input type="text" name="dueDate" id="todo-dueDate">
+            <label for="todo-priority">Priority:</label>
+            <input type="text" name="priority" id="todo-priority">
+            <button>Submit</button>
         </form>
     </dialog>
 
