@@ -28,10 +28,12 @@ export function updateScreen() {
     
     // callbacks
     const populateSidebar = () => {
+
         // empty existing dom for refresh
         while (sidebar.firstChild) {
             sidebar.removeChild(sidebar.lastChild);
         }
+
         // load from memory
         projectList.map((project, index) => {
             addToContainer(sidebar, project.name, index);
@@ -119,9 +121,13 @@ export function initListeners() {
         const taskIndex = target.dataset.taskIndex
 
         if (target.name === 'delete') {
-            projectList[projectIndex].tasks.splice(taskIndex, 1);
+            if (!target.dataset.taskIndex) {
+                console.log(target.dataset.projectIndex);
+                projectList.splice(projectIndex, 1);
+            } else {
+                projectList[projectIndex].tasks.splice(taskIndex, 1);
+            }
             updateScreen()
-            
         } else if (target.name === 'edit') {
             // save clicked index on close btn
             editTaskClose.dataset.projectIndex = projectIndex;
