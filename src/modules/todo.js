@@ -46,12 +46,16 @@ export default class Todo {
     }
 
     // returns an objects
-    getInfo() {
+    toObject() {
         return {
             name: this.name,
             description: this.description,
             dueDate: this.dueDate,
             priority: this.priority
         };
+    }
+
+    toJSON() {
+        return JSON.stringify(this.toObject());
     }
 }
