@@ -1,20 +1,5 @@
 // DOM utilities
 
-export function createNewContainer(element = 'div', name = '', index = '', newClass = '') {
-    const newElement = document.createElement(element);
-    if (name) {
-        newElement.textContent = name;
-        newElement.dataset.name = name.replaceAll(' ','-').toLowerCase();
-    }
-    if (index || index === 0) {
-        newElement.dataset.index = index;
-    }
-    if (newClass) {
-        newElement.classList.add(newClass);
-    }
-    return newElement;
-}
-
 // multi purpose util to insert item from memory to a dom element
 export function addToContainer(container, item, index, element = 'div') {
     const newElement = document.createElement(element);
@@ -75,4 +60,53 @@ export function createProjectTasks(project, projectIndex) {
     });
 
     return dataDiv
+}
+
+export function updateScreen(memory, content, sidebar) {
+    
+    const populateSidebar = () => {
+
+        // empty existing dom for refresh
+        while (sidebar.firstChild) {
+            sidebar.removeChild(sidebar.lastChild);
+        }
+
+        // load from memory
+        memory.map((project, index) => {
+            addToContainer(sidebar, project.name, index, 'button');
+        })
+    }
+
+    const populateContent = () => {
+
+        // empty existing dom for refresh
+        while (content.firstChild) {
+            content.removeChild(content.lastChild);
+        }
+
+        // load from memory
+        memory.map((project, projectIndex)=> {
+            
+            // init container
+            const projectDiv = document.createElement('div');
+            projectDiv.classList.add('project');
+    
+            // create header for each project
+            projectDiv.appendChild(createProjectHeader(
+                project.toObject().name, 
+                projectIndex
+            ));
+    
+            // project data
+            projectDiv.appendChild(createProjectTasks(
+                project,
+                projectIndex
+            ));
+
+            content.appendChild(projectDiv);
+        });
+    }
+
+    populateSidebar(memory);
+    populateContent(memory);
 }

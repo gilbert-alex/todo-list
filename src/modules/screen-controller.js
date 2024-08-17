@@ -1,11 +1,11 @@
 // screen-controller.js
 
-import {projectList} from '../index';
+import {projectList, filteredList} from '../index';
 import Project from './project';
-import {createNewContainer,
-        addToContainer,
+import {addToContainer,
         createProjectHeader,
-        createProjectTasks
+        createProjectTasks,
+        updateScreen
 } from './dom-util'
 
 const sidebar = document.querySelector('#project-sidebar');
@@ -17,61 +17,13 @@ const newProjectForm = newProjectModal.querySelector('#newProjectForm');
 const newProjectInput = newProjectModal.querySelector('#newProject-name');
 const newProjectClose = newProjectModal.querySelector('.close');
 const saveBtn = document.querySelector('#saveBtn');
+const viewAllBtn = document.querySelector('#viewAllBtn');
 // content buttons
 const editTaskModal = document.querySelector('#editProjectDialog');
 const editTaskForm = editTaskModal.querySelector('#editTaskForm');
 const editTaskInputs = editTaskModal.querySelectorAll('input');
 const editTaskClose = editTaskModal.querySelector('.close');
 
-// load memory to html
-export function updateScreen() {
-    
-    // callbacks
-    const populateSidebar = () => {
-
-        // empty existing dom for refresh
-        while (sidebar.firstChild) {
-            sidebar.removeChild(sidebar.lastChild);
-        }
-
-        // load from memory
-        projectList.map((project, index) => {
-            addToContainer(sidebar, project.name, index);
-        })
-    }
-
-    const populateContent = () => {
-
-        // empty existing dom for refresh
-        while (content.firstChild) {
-            content.removeChild(content.lastChild);
-        }
-
-        // load from memory
-        projectList.map((project, projectIndex)=> {
-            
-            // init container
-            const projectDiv = document.createElement('div');
-            projectDiv.classList.add('project');
-    
-            // create header for each project
-            projectDiv.appendChild(createProjectHeader(
-                project.toObject().name, 
-                projectIndex
-            ));
-    
-            // project data
-            projectDiv.appendChild(createProjectTasks(
-                project,
-                projectIndex
-            ));
-
-            content.appendChild(projectDiv);
-        });
-    }
-    populateSidebar();
-    populateContent();
-}
 
 // populate modal input values from memory
 const populateInputs = (projectIndex, taskIndex) => {
@@ -100,7 +52,7 @@ export function initListeners() {
         new Project(newProjectForm.querySelector('#newProject-name').value);
         newProjectModal.close();
         newProjectForm.reset();
-        updateScreen();
+        updateScreen(projectList, content, sidebar);
     })
 
     // todo: work on using local storage
@@ -114,20 +66,36 @@ export function initListeners() {
         console.log(window.localStorage);
     })
 
+    // filter content with nav sidebar btns
+    // sidebar.addEventListener('click', e => {
+    //     const target = e.target;
+    //     const index = target.dataset.index;
+
+    //     const filteredList = [projectList[index]]
+    //     updateScreen(filteredList, content, sidebar);
+    // })
+
     // handle all btn clicks within content view
     content.addEventListener('click', e => {
+
         const target = e.target
         const projectIndex = target.dataset.projectIndex
         const taskIndex = target.dataset.taskIndex
 
+        // handle delete buttons
         if (target.name === 'delete') {
+
+            // delete entire project
             if (!target.dataset.taskIndex) {
                 console.log(target.dataset.projectIndex);
                 projectList.splice(projectIndex, 1);
+            // delete individual task
             } else {
                 projectList[projectIndex].tasks.splice(taskIndex, 1);
             }
-            updateScreen()
+            updateScreen(projectList, content, sidebar)
+
+        // handle edit buttons
         } else if (target.name === 'edit') {
             // save clicked index on close btn
             editTaskClose.dataset.projectIndex = projectIndex;
@@ -159,11 +127,11 @@ export function initListeners() {
 
             editTaskModal.close()
             editTaskForm.reset()
-            updateScreen()
+            updateScreen(projectList, content, sidebar)
         } else if (name === 'cancel') {
             editTaskModal.close()
             editTaskForm.reset()
-            updateScreen()
+            updateScreen(projectList, content, sidebar)
         } else {
             return
         }

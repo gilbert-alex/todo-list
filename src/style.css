@@ -16,9 +16,36 @@ body {
     flex: 1;
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    margin: 50px 10px;
 
-    margin: 10px;
+    #nav-btns {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 5px;
+        padding: 5px;
+
+        button {
+            width: 75%;
+        }
+    }
+
+    p {
+        margin-top: 20px;
+    }
+
+    #project-sidebar {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 5px;
+        padding: 5px;
+        margin-top: 10px;
+
+        * {
+            width: 75%;
+        }
+    }
 }
 
 #content {
@@ -47,6 +74,8 @@ body {
 
         h3 {
             text-transform: capitalize;
+            justify-self: center;
+            padding: 5px;
             font-weight: 700;
         }
 
