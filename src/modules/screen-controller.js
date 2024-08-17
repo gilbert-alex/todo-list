@@ -25,7 +25,7 @@ const editTaskInputs = editTaskModal.querySelectorAll('input');
 const editTaskClose = editTaskModal.querySelector('.close');
 
 
-export function initNewProjectBtn() {
+export function initNavBtns() {
 
     // new project button - open
     newProjectBtn.addEventListener('click', () => {
@@ -45,9 +45,6 @@ export function initNewProjectBtn() {
         newProjectForm.reset();
         updateScreen(projectList, content, sidebar);
     })
-}
-
-export function initSaveBtn() {
 
     // todo: work on using local storage
     saveBtn.addEventListener('click', () => {

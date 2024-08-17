@@ -1,15 +1,19 @@
 import './style.css';
 
-// new branch
+import {initContentListener, initNavBtns} from './modules/screen-controller'
 
 
-import {initListeners} from './modules/screen-controller'
+export const projectList = [];
+export const filteredList = [];
+
+initNavBtns();
+initContentListener();
+
+
+// demo
 import demo from './demo'
-
-demo();
-
 import {updateScreen} from './modules/dom-util'
 const content = document.querySelector('#content');
 const sidebar = document.querySelector('#project-sidebar')
-
+demo();
 updateScreen(projectList, content, sidebar)
