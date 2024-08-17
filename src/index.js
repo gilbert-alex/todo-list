@@ -1,8 +1,15 @@
 import './style.css';
 
+// new branch
+
+
+import {initListeners} from './modules/screen-controller'
 import demo from './demo'
 
+demo();
 
-demo()
+import {updateScreen} from './modules/dom-util'
+const content = document.querySelector('#content');
+const sidebar = document.querySelector('#project-sidebar')
 
-const keys = new Array(Object.keys(localStorage));
+updateScreen(projectList, content, sidebar)

@@ -3,17 +3,17 @@
 import Todo from './modules/todo'
 import Project from './modules/project'
 
-export default  function demo() {
+export default function demo() {
     const birdhouse = new Project('Build a birdhouse')
     const getReady = new Project('Get ready for day')
-
+    
     const measure = new Todo(
         'measure wood',
         'measure twice cut once',
         'tomorrow',
         'high',
     );
-
+    
     const cutWood = new Todo(
         'cut wood',
         'be sure you measured twice',
@@ -28,11 +28,7 @@ export default  function demo() {
         'high',
     )
 
-    // console.log(measure.toJSON());
     birdhouse.addTask(measure);
-    console.log(localStorage);
-
-    // birdhouse.addTask(measure.toJSON());
-    // birdhouse.addTask(cutWood);
-    // getReady.addTask(shower);
+    birdhouse.addTask(cutWood);
+    getReady.addTask(shower);
 }
