@@ -9,6 +9,7 @@
 
 body {
     display: flex;
+
 }
 
 #sidebar {
@@ -35,27 +36,46 @@ body {
 
     border: 1px solid black;
     border-radius: 10px;
-
     padding: 10px;
+    width: 400px;
 
     .header {
-        display: flex; 
-        flex-direction: row;
-        justify-content: space-between;
+        display: grid;
+        grid-template-columns: 3fr repeat(2, 1fr);
+        margin-top: 10px;
+
 
         h3 {
-            text-transform: uppercase;
+            text-transform: capitalize;
             font-weight: 700;
+        }
+
+        button {
+            width: 50px;
+            height: 70%;
+            justify-self: center;
+            align-self: center;
         }
     }
 
-    p:first-child {
-        padding-top: 5px;
-        border-top: 1px solid;
-    }
+    .task {
+        display: grid;
+        grid-template-columns: 3fr repeat(2, 1fr);
+        margin-top: 10px;
 
-    p {
-        text-transform: capitalize;
+        p {
+            justify-self: left;
+            padding: 5px;
+            text-transform: capitalize;
+            min-height: 18.5px;
+        }
+
+        button {
+            width: 50px;
+            height: 70%;
+            justify-self: center;
+            align-self: center;
+        }
     }
 }
 
@@ -74,12 +94,28 @@ dialog {
         }
     }
 
-    #editProjectForm {
+    #editTaskForm {
         display: flex;
         flex-direction: column;
 
-        *:nth-child(odd) {
+        .btns {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            gap: 10px;
+            padding-top: 10px;
+        }
+
+        button {
+            padding: 5px;
+        }
+
+        label {
             margin-top: 5px;
+        }
+
+        input {
+            text-transform: capitalize;
         }
     }
 }

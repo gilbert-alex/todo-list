@@ -29,7 +29,7 @@
     </dialog>
 
     <dialog id="editProjectDialog">
-        <form action="" method="dialog" id="editProjectForm">
+        <form action="" method="dialog" id="editTaskForm">
             <label for="todo-name">Name:</label>
             <input type="text" name="name" id="todo-name">
             <label for="todo-desc">Description:</label>
@@ -38,7 +38,10 @@
             <input type="text" name="dueDate" id="todo-dueDate">
             <label for="todo-priority">Priority:</label>
             <input type="text" name="priority" id="todo-priority">
-            <button>Submit</button>
+            <div class="btns">
+                <button class="cancel" name="cancel">Cancel</button>
+                <button class="close" name="close">Submit</button>
+            </div>
         </form>
     </dialog>
 

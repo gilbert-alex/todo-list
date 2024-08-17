@@ -22,6 +22,24 @@ export function addToContainer(container, item, index, element = 'div') {
     container.appendChild(newElement);
 }
 
-// export function closeDialog(dialog) {
+export function createHeader(title, index) {
 
-// }
+    const newHeader = document.createElement('div');
+    newHeader.classList.add('header');
+
+    const newTitle = document.createElement('h3');
+    newTitle.textContent = title;
+
+    const addBtn = document.createElement('button');
+    addBtn.textContent = addBtn.name = 'add';
+    addBtn.dataset.projectIndex = index;
+
+    const delBtn = document.createElement('button');
+    delBtn.textContent = delBtn.name = 'delete';
+    delBtn.dataset.projectIndex = index;
+
+    newHeader.appendChild(newTitle);
+    newHeader.appendChild(addBtn);
+    newHeader.appendChild(delBtn);
+    return newHeader
+}

@@ -2,88 +2,112 @@
 
 import {projectList} from '../index';
 import Project from './project';
-import {createNewContainer, addToContainer} from './dom-util'
+import {createNewContainer, addToContainer, createHeader} from './dom-util'
 
+const sidebar = document.querySelector('#project-sidebar');
+const content = document.querySelector('#content');
+// sidebar buttons
+const newProjectBtn = document.getElementById('newProjectBtn');
+const newProjectModal = document.querySelector('#newProjectDialog');
+const newProjectForm = newProjectModal.querySelector('#newProjectForm');
+const newProjectInput = newProjectModal.querySelector('#newProject-name');
+const newProjectClose = newProjectModal.querySelector('.close');
+const saveBtn = document.querySelector('#saveBtn');
+// content buttons
+const editTaskModal = document.querySelector('#editProjectDialog');
+const editTaskForm = editTaskModal.querySelector('#editTaskForm');
+const editTaskInputs = editTaskModal.querySelectorAll('input');
+const editTaskClose = editTaskModal.querySelector('.close');
 
-// A list of unique project values
-export function fillNavigation(projectList) {
-    const container = document.getElementById('project-sidebar');
-
-    while (container.firstChild) {
-        container.removeChild(container.lastChild);
-    };
-
-    projectList.map((project, index) => {
-        addToContainer(container, project.name, index);
-    });
-}
-
-
-// main function to fill content container with all projects
-// and task titles
-export function fillContent(projectList) {
-    const container = document.getElementById('content');
-
-    while (container.firstChild) {
-        container.removeChild(container.lastChild);
-    };
-
-    projectList.map((project, index)=> {
-        const projectDiv = document.createElement('div');
-        projectDiv.dataset.index = index;
-        projectDiv.classList.add('project');
-
-        const header = document.createElement('div');
-        header.classList.add('header');
-
-        const title = document.createElement('h3')
-        title.textContent = project.toObject().name;
-        header.appendChild(title);
-
-        const editBtn = document.createElement('button');
-        editBtn.textContent = 'edit';
-        editBtn.dataset.index = index;
-        header.appendChild(editBtn);
-
-        projectDiv.appendChild(header);
-
-        const dataDiv = document.createElement('div');
-        project.toObject().tasks.map((task, index) => 
-            addToContainer(dataDiv, task.name, index, 'p')
-        );
-        projectDiv.appendChild(dataDiv);
+// load memory to html
+export function updateScreen() {
     
-        container.appendChild(projectDiv);
-    });
+    // callbacks
+    const populateSidebar = () => {
+        // empty existing dom for refresh
+        while (sidebar.firstChild) {
+            sidebar.removeChild(sidebar.lastChild);
+        }
+        // load from memory
+        projectList.map((project, index) => {
+            addToContainer(sidebar, project.name, index);
+        })
+    }
+
+    const populateContent = () => {
+        // empty existing dom for refresh
+        while (content.firstChild) {
+            content.removeChild(content.lastChild);
+        }
+        // load from memory
+        projectList.map((project, projectIndex)=> {
+            const projectDiv = document.createElement('div');
+            projectDiv.classList.add('project');
+    
+            projectDiv.appendChild(createHeader(
+                project.toObject().name, 
+                projectIndex
+            ));
+    
+            // project data
+            const dataDiv = document.createElement('div');
+            dataDiv.classList.add('task');
+            project.toObject().tasks.map((task, taskIndex) => {
+                addToContainer(dataDiv, task.name, taskIndex, 'p');
+                // edit btn
+                const editBtn = document.createElement('button');
+                editBtn.textContent = editBtn.name = 'edit';
+                editBtn.dataset.projectIndex = projectIndex;
+                editBtn.dataset.taskIndex = taskIndex;
+                dataDiv.appendChild(editBtn);
+                // delete btn
+                const delBtn = document.createElement('button');
+                delBtn.textContent = delBtn.name = 'delete';
+                delBtn.dataset.projectIndex = projectIndex;
+                delBtn.dataset.taskIndex = taskIndex;
+                dataDiv.appendChild(delBtn);
+                
+            });
+            projectDiv.appendChild(dataDiv);
+
+            content.appendChild(projectDiv);
+        });
+    }
+    populateSidebar();
+    populateContent();
 }
 
-// Nav buttons
-// ----------------------------------------------------------------------------
+// populate modal input values from memory
+const populateInputs = (projectIndex, taskIndex) => {
+    const targetProject = projectList[projectIndex];
+    const targetTask = targetProject.toObject().tasks[taskIndex];
+    editTaskInputs.forEach( input => {
+        input.value = targetTask[input.name] || '';
+    })
+}
 
-// Create new project object on global array and refresh view
-export function initNewProject() {
-    const open = document.getElementById('newProjectBtn');
-    const modal = document.querySelector('#newProjectDialog');
-    const form = modal.querySelector('#newProjectForm');
-    const close = modal.querySelector('.close');
+export function initListeners() {
 
-    open.addEventListener('click', () => {
-        form.reset();
-        modal.showModal();
+    // new project button - open
+    newProjectBtn.addEventListener('click', () => {
+        newProjectForm.reset();
+        newProjectModal.showModal();
     })
     
-    close.addEventListener('click', () => {
-        new Project(form.querySelector('#newProject-name').value);
-        modal.close();
-        form.reset();
-        fillNavigation(projectList);
-        fillContent(projectList);
+    // new project button - close
+    newProjectClose.addEventListener('click', () => {
+        // error checking
+        if (newProjectInput.value.trim() === '') {
+            alert('no blanks')
+            return
+        }
+        new Project(newProjectForm.querySelector('#newProject-name').value);
+        newProjectModal.close();
+        newProjectForm.reset();
+        updateScreen();
     })
-}
 
-// Save global projectList to local storage
-export function initSave() {
-    const saveBtn = document.querySelector('#saveBtn');
+    // todo: work on using local storage
     saveBtn.addEventListener('click', () => {
         projectList.map( pl => {
             window.localStorage.setItem(
@@ -93,24 +117,55 @@ export function initSave() {
     });
         console.log(window.localStorage);
     })
-}
 
-// Edit existing project
-export function editProject() {
-    const content = document.querySelector('#content');
-    const modal = document.querySelector('#editProjectDialog');
-    const inputs = modal.querySelectorAll('input');
-
+    // handle all btn clicks within content view
     content.addEventListener('click', e => {
         const target = e.target
-        const index = target.dataset.index
+        const projectIndex = target.dataset.projectIndex
+        const taskIndex = target.dataset.taskIndex
 
-        inputs.forEach( input => {
-            const targetValue = input.name;
-            input.value = projectList[index].toObject().tasks[0][targetValue];
-        });
+        if (target.name === 'delete') {
+            projectList[projectIndex].tasks.splice(taskIndex, 1);
+            updateScreen()
+            
+        } else if (target.name === 'edit') {
+            // save clicked index on close btn
+            editTaskClose.dataset.projectIndex = projectIndex;
+            editTaskClose.dataset.taskIndex = taskIndex;
+            // load details from memory
+            populateInputs(projectIndex, taskIndex);
+            editTaskModal.showModal();
 
-        modal.showModal();
+        } else {
+            console.log('unrecognized button');
+        }
     })
 
-}
+    // handle close of edit task
+    editTaskModal.addEventListener('click', e => {
+        const target = e.target;
+        const name = target.name;
+
+        if (name === 'close') {
+            const projectIndex = editTaskClose.dataset.projectIndex;
+            const taskIndex = editTaskClose.dataset.taskIndex;
+
+            const targetProject = projectList[projectIndex];
+            const targetTask = targetProject.tasks[taskIndex];
+
+            editTaskInputs.forEach(input => {
+                targetTask[input.name] = input.value;
+            });
+
+            editTaskModal.close()
+            editTaskForm.reset()
+            updateScreen()
+        } else if (name === 'cancel') {
+            editTaskModal.close()
+            editTaskForm.reset()
+            updateScreen()
+        } else {
+            return
+        }
+    })
+};
