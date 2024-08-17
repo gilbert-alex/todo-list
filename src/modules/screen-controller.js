@@ -2,7 +2,11 @@
 
 import {projectList} from '../index';
 import Project from './project';
-import {createNewContainer, addToContainer, createHeader} from './dom-util'
+import {createNewContainer,
+        addToContainer,
+        createProjectHeader,
+        createProjectTasks
+} from './dom-util'
 
 const sidebar = document.querySelector('#project-sidebar');
 const content = document.querySelector('#content');
@@ -35,40 +39,30 @@ export function updateScreen() {
     }
 
     const populateContent = () => {
+
         // empty existing dom for refresh
         while (content.firstChild) {
             content.removeChild(content.lastChild);
         }
+
         // load from memory
         projectList.map((project, projectIndex)=> {
+            
+            // init container
             const projectDiv = document.createElement('div');
             projectDiv.classList.add('project');
     
-            projectDiv.appendChild(createHeader(
+            // create header for each project
+            projectDiv.appendChild(createProjectHeader(
                 project.toObject().name, 
                 projectIndex
             ));
     
             // project data
-            const dataDiv = document.createElement('div');
-            dataDiv.classList.add('task');
-            project.toObject().tasks.map((task, taskIndex) => {
-                addToContainer(dataDiv, task.name, taskIndex, 'p');
-                // edit btn
-                const editBtn = document.createElement('button');
-                editBtn.textContent = editBtn.name = 'edit';
-                editBtn.dataset.projectIndex = projectIndex;
-                editBtn.dataset.taskIndex = taskIndex;
-                dataDiv.appendChild(editBtn);
-                // delete btn
-                const delBtn = document.createElement('button');
-                delBtn.textContent = delBtn.name = 'delete';
-                delBtn.dataset.projectIndex = projectIndex;
-                delBtn.dataset.taskIndex = taskIndex;
-                dataDiv.appendChild(delBtn);
-                
-            });
-            projectDiv.appendChild(dataDiv);
+            projectDiv.appendChild(createProjectTasks(
+                project,
+                projectIndex
+            ));
 
             content.appendChild(projectDiv);
         });
