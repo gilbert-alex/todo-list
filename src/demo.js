@@ -20,14 +20,14 @@ export default function demo() {
         'tomorrow',
         'medium',
     )
-    
+
     const shower = new Todo(
         'shower',
         'can\'t smell bad',
         'morning',
         'high',
     )
-    
+
     birdhouse.addTask(measure);
     birdhouse.addTask(cutWood);
     getReady.addTask(shower);

@@ -1,6 +1,5 @@
 // project.js
 
-import {projectList} from '../index'
 import Todo from './todo'
 
 export default class Project {
@@ -12,7 +11,7 @@ export default class Project {
         this.#tasks = [];
 
         // add this to array in global namespace
-        projectList.push(this);
+        localStorage.setItem(this.name, this.tasks);
     }
 
     get name() {
@@ -42,9 +41,9 @@ export default class Project {
 
     addTask(newTodo) {
         if (newTodo instanceof Todo) {
-            this.#tasks.push(newTodo);
+            this.#tasks.push(newTodo.toJSON());
         } else {
-            console.log('Invalid Todo instance');
+            console.log(`Type: ${typeof newTodo} is invalid`);
         }
     }
 

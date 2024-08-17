@@ -25,16 +25,7 @@ const editTaskInputs = editTaskModal.querySelectorAll('input');
 const editTaskClose = editTaskModal.querySelector('.close');
 
 
-// populate modal input values from memory
-const populateInputs = (projectIndex, taskIndex) => {
-    const targetProject = projectList[projectIndex];
-    const targetTask = targetProject.toObject().tasks[taskIndex];
-    editTaskInputs.forEach( input => {
-        input.value = targetTask[input.name] || '';
-    })
-}
-
-export function initListeners() {
+export function initNewProjectBtn() {
 
     // new project button - open
     newProjectBtn.addEventListener('click', () => {
@@ -54,6 +45,9 @@ export function initListeners() {
         newProjectForm.reset();
         updateScreen(projectList, content, sidebar);
     })
+}
+
+export function initSaveBtn() {
 
     // todo: work on using local storage
     saveBtn.addEventListener('click', () => {
@@ -65,6 +59,7 @@ export function initListeners() {
     });
         console.log(window.localStorage);
     })
+}
 
     // filter content with nav sidebar btns
     // sidebar.addEventListener('click', e => {
@@ -74,6 +69,17 @@ export function initListeners() {
     //     const filteredList = [projectList[index]]
     //     updateScreen(filteredList, content, sidebar);
     // })
+
+export function initContentListener() {
+
+    // populate modal input values from memory
+    const populateInputs = (projectIndex, taskIndex) => {
+        const targetProject = projectList[projectIndex];
+        const targetTask = targetProject.toObject().tasks[taskIndex];
+        editTaskInputs.forEach( input => {
+            input.value = targetTask[input.name] || '';
+        })
+    }
 
     // handle all btn clicks within content view
     content.addEventListener('click', e => {
@@ -136,4 +142,4 @@ export function initListeners() {
             return
         }
     })
-};
+}
