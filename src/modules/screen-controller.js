@@ -60,12 +60,15 @@ viewAllBtn.addEventListener('click', () => {
     updateScreen(projectList, content, sidebar, filterList);
 })
 
+
 // filter content with nav sidebar btns
 sidebar.addEventListener('click', e => {
-    filterList.push(e.target.dataset.index);
-    const unique = [... new Set(filterList)];
-    filterList.length = 0
-    filterList.push(...unique)
+    const newIndex = e.target.dataset.index;
+
+    filterList.includes(newIndex) ?
+        filterList.splice(filterList.indexOf(newIndex), 1) :
+        filterList.push(newIndex);
+
     updateScreen(projectList, content, sidebar, filterList);
 })
 
