@@ -62,7 +62,7 @@ export function createProjectTasks(project, projectIndex) {
     return dataDiv
 }
 
-export function updateScreen(memory, content, sidebar) {
+export function updateScreen(memory, content, sidebar, filterList) {
     
     const populateSidebar = () => {
 
@@ -86,27 +86,30 @@ export function updateScreen(memory, content, sidebar) {
 
         // load from memory
         memory.map((project, projectIndex)=> {
-            
-            // init container
-            const projectDiv = document.createElement('div');
-            projectDiv.classList.add('project');
-    
-            // create header for each project
-            projectDiv.appendChild(createProjectHeader(
-                project.toObject().name, 
-                projectIndex
-            ));
-    
-            // project data
-            projectDiv.appendChild(createProjectTasks(
-                project,
-                projectIndex
-            ));
+            if (filterList.length === 0 ||
+                filterList.includes(String(projectIndex))
+            ) {
+                // init container
+                const projectDiv = document.createElement('div');
+                projectDiv.classList.add('project');
 
-            content.appendChild(projectDiv);
+                // create header for each project
+                projectDiv.appendChild(createProjectHeader(
+                    project.toObject().name, 
+                    projectIndex
+                ));
+
+                // project data
+                projectDiv.appendChild(createProjectTasks(
+                    project,
+                    projectIndex
+                ));
+
+                content.appendChild(projectDiv); 
+            }
         });
     }
 
-    populateSidebar(memory);
-    populateContent(memory);
+    populateSidebar();
+    populateContent();
 }

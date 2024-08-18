@@ -4,7 +4,7 @@ import {initContentListener, initNavBtns} from './modules/screen-controller'
 
 
 export const projectList = [];
-export const filteredList = [];
+export const filterList = [];
 
 initNavBtns();
 initContentListener();
@@ -16,4 +16,4 @@ import {updateScreen} from './modules/dom-util'
 const content = document.querySelector('#content');
 const sidebar = document.querySelector('#project-sidebar')
 demo();
-updateScreen(projectList, content, sidebar)
+updateScreen(projectList, content, sidebar, filterList)

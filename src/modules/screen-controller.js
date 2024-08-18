@@ -1,12 +1,8 @@
 // screen-controller.js
 
-import {projectList, filteredList} from '../index';
+import {projectList, filterList} from '../index';
 import Project from './project';
-import {addToContainer,
-        createProjectHeader,
-        createProjectTasks,
-        updateScreen
-} from './dom-util'
+import {updateScreen} from './dom-util'
 
 const sidebar = document.querySelector('#project-sidebar');
 const content = document.querySelector('#content');
@@ -43,7 +39,7 @@ export function initNavBtns() {
         new Project(newProjectForm.querySelector('#newProject-name').value);
         newProjectModal.close();
         newProjectForm.reset();
-        updateScreen(projectList, content, sidebar);
+        updateScreen(projectList, content, sidebar, filterList);
     })
 
     // todo: work on using local storage
@@ -59,13 +55,14 @@ export function initNavBtns() {
 }
 
     // filter content with nav sidebar btns
-    // sidebar.addEventListener('click', e => {
-    //     const target = e.target;
-    //     const index = target.dataset.index;
+    sidebar.addEventListener('click', e => {
+        filterList.push(e.target.dataset.index);
+        const unique = [... new Set(filterList)];
+        filterList.length = 0
+        filterList.push(...unique)
+        updateScreen(projectList, content, sidebar, filterList);
+    })
 
-    //     const filteredList = [projectList[index]]
-    //     updateScreen(filteredList, content, sidebar);
-    // })
 
 export function initContentListener() {
 
@@ -90,13 +87,12 @@ export function initContentListener() {
 
             // delete entire project
             if (!target.dataset.taskIndex) {
-                console.log(target.dataset.projectIndex);
                 projectList.splice(projectIndex, 1);
             // delete individual task
             } else {
                 projectList[projectIndex].tasks.splice(taskIndex, 1);
             }
-            updateScreen(projectList, content, sidebar)
+            updateScreen(projectList, content, sidebar, filterList)
 
         // handle edit buttons
         } else if (target.name === 'edit') {
@@ -130,11 +126,11 @@ export function initContentListener() {
 
             editTaskModal.close()
             editTaskForm.reset()
-            updateScreen(projectList, content, sidebar)
+            updateScreen(projectList, content, sidebar, filterList)
         } else if (name === 'cancel') {
             editTaskModal.close()
             editTaskForm.reset()
-            updateScreen(projectList, content, sidebar)
+            updateScreen(projectList, content, sidebar, filterList)
         } else {
             return
         }
