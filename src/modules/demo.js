@@ -1,7 +1,8 @@
 // demo
 
-import Todo from './modules/todo'
-import Project from './modules/project'
+import Todo from './todo'
+import Project from './project'
+
 
 export default function demo() {
     const birdhouse = new Project('Build a birdhouse')
@@ -32,3 +33,4 @@ export default function demo() {
     birdhouse.addTask(cutWood);
     getReady.addTask(shower);
 }
+

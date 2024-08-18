@@ -1,19 +1,13 @@
 import './style.css';
+import './modules/screen-controller'
 
-import {initContentListener, initNavBtns} from './modules/screen-controller'
-
-
-export const projectList = [];
-export const filterList = [];
-
-initNavBtns();
-initContentListener();
-
+export const projectList = []
+export const filterList = []
 
 // demo
-import demo from './demo'
+import demo from './modules/demo'
 import {updateScreen} from './modules/dom-util'
 const content = document.querySelector('#content');
 const sidebar = document.querySelector('#project-sidebar')
-demo();
+demo()
 updateScreen(projectList, content, sidebar, filterList)

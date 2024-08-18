@@ -62,7 +62,11 @@ export function createProjectTasks(project, projectIndex) {
     return dataDiv
 }
 
-export function updateScreen(memory, content, sidebar, filterList) {
+export function updateScreen(memory, content, sidebar, include = null) {
+
+    if (include === null) {
+        include = [...memory.map((_,i) => i)]
+    }
     
     const populateSidebar = () => {
 
@@ -86,8 +90,8 @@ export function updateScreen(memory, content, sidebar, filterList) {
 
         // load from memory
         memory.map((project, projectIndex)=> {
-            if (filterList.length === 0 ||
-                filterList.includes(String(projectIndex))
+            if (include.length === 0 ||
+                include.includes(String(projectIndex))
             ) {
                 // init container
                 const projectDiv = document.createElement('div');
@@ -112,4 +116,13 @@ export function updateScreen(memory, content, sidebar, filterList) {
 
     populateSidebar();
     populateContent();
+}
+
+// populate modal input values from memory
+export function populateInputs(memory, index, subIndex, domElement) {
+    const targetProject = memory[index];
+    const targetTask = targetProject.toObject().tasks[subIndex];
+    domElement.forEach( input => {
+        input.value = targetTask[input.name] || '';
+    })
 }
