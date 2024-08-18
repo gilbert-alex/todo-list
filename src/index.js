@@ -1,4 +1,5 @@
 import './style.css';
+import '@mdi/font/css/materialdesignicons.min.css';
 import './modules/screen-controller'
 
 export const projectList = []
@@ -11,3 +12,4 @@ const content = document.querySelector('#content');
 const sidebar = document.querySelector('#project-sidebar')
 demo()
 updateScreen(projectList, content, sidebar, filterList)
+

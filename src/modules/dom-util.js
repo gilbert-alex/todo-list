@@ -28,6 +28,7 @@ export function createProjectHeader(title, index) {
     newHeader.appendChild(newTitle);
     newHeader.appendChild(addBtn);
     newHeader.appendChild(delBtn);
+    console.log('new header made');
     return newHeader
 }
 

@@ -1,6 +1,4 @@
-.test {
-    border: 1px solid red;
-}
+
 
 * {
     margin: 0;
@@ -147,4 +145,11 @@ dialog {
             text-transform: capitalize;
         }
     }
+}
+
+
+
+
+.test {
+    border: 1px solid red;
 }
