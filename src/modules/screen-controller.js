@@ -2,6 +2,7 @@
 
 import {projectList, filterList} from '../index';
 import Project from './project';
+import Todo from './todo'
 import {updateScreen, populateInputs} from './dom-util'
 
 
@@ -16,10 +17,10 @@ const newProjectClose = newProjectModal.querySelector('.close');
 const saveBtn = document.querySelector('#saveBtn');
 const viewAllBtn = document.querySelector('#viewAllBtn');
 // content buttons
-const editTaskModal = document.querySelector('#editProjectDialog');
-const editTaskForm = editTaskModal.querySelector('#editTaskForm');
-const editTaskInputs = editTaskModal.querySelectorAll('input');
-const editTaskClose = editTaskModal.querySelector('.close');
+const taskModal = document.querySelector('#editProjectDialog');
+const editTaskForm = taskModal.querySelector('#editTaskForm');
+const taskInputs = taskModal.querySelectorAll('input');
+const editTaskClose = taskModal.querySelector('.close');
 
 
 // new project button - open
@@ -61,7 +62,7 @@ viewAllBtn.addEventListener('click', () => {
 })
 
 
-// filter content with nav sidebar btns
+// Filter Projects
 sidebar.addEventListener('click', e => {
     const newIndex = e.target.dataset.index;
 
@@ -73,15 +74,33 @@ sidebar.addEventListener('click', e => {
 })
 
 
-// handle all btn clicks within content view
+// CRUD
 content.addEventListener('click', e => {
 
     const target = e.target
+    const operation = target.name
     const projectIndex = target.dataset.projectIndex
     const taskIndex = target.dataset.taskIndex
 
-    // handle delete buttons
-    if (target.name === 'delete') {
+    // Create
+    if (operation === 'add') {
+        editTaskClose.dataset.projectIndex = projectIndex;
+        editTaskClose.dataset.taskIndex = taskIndex;
+        editTaskClose.dataset.operation = operation;
+        taskModal.showModal();
+
+    // Update
+    } else if (operation === 'edit') {
+        // save clicked index on close btn
+        editTaskClose.dataset.projectIndex = projectIndex;
+        editTaskClose.dataset.taskIndex = taskIndex;
+        editTaskClose.dataset.operation = operation;
+        // load details from memory
+        populateInputs(projectList, projectIndex, taskIndex, taskInputs);
+        taskModal.showModal();
+
+    // Delete
+    } else if (operation === 'delete') {
 
         // delete entire project
         if (!target.dataset.taskIndex) {
@@ -92,41 +111,56 @@ content.addEventListener('click', e => {
         }
         updateScreen(projectList, content, sidebar, filterList)
 
-    // handle edit buttons
-    } else if (target.name === 'edit') {
-        // save clicked index on close btn
-        editTaskClose.dataset.projectIndex = projectIndex;
-        editTaskClose.dataset.taskIndex = taskIndex;
-        // load details from memory
-        populateInputs(projectList, projectIndex, taskIndex, editTaskInputs);
-        editTaskModal.showModal();
-
     } else {
         console.log('unrecognized button');
     }
 })
 
 // handle close of edit task
-editTaskModal.addEventListener('click', e => {
+taskModal.addEventListener('click', e => {
     const target = e.target;
     const name = target.name;
 
     if (name === 'close') {
+        const operation = editTaskClose.dataset.operation;
         const projectIndex = editTaskClose.dataset.projectIndex;
         const taskIndex = editTaskClose.dataset.taskIndex;
 
-        const targetProject = projectList[projectIndex];
-        const targetTask = targetProject.tasks[taskIndex];
+        if (operation === 'add') {
+            const targetProject = projectList[projectIndex];
 
-        editTaskInputs.forEach(input => {
-            targetTask[input.name] = input.value;
-        });
+            const buffer = {}
+            taskInputs.forEach(input => {
+                buffer[input.name] = input.value;
+            });
 
-        editTaskModal.close()
+            const newTask = new Todo(
+                buffer.name,
+                buffer.description,
+                buffer.dueDate,
+                buffer.priority
+            )
+
+            console.log(newTask);
+            targetProject.addTask(newTask);
+            
+        } else if (operation === 'edit') {
+            const targetProject = projectList[projectIndex];
+            const targetTask = targetProject.tasks[taskIndex];
+
+            // update task
+            taskInputs.forEach(input => {
+                targetTask[input.name] = input.value;
+            });
+        } else {
+            console.log('unrecognized operation');
+        }
+
+        taskModal.close()
         editTaskForm.reset()
         updateScreen(projectList, content, sidebar, filterList)
     } else if (name === 'cancel') {
-        editTaskModal.close()
+        taskModal.close()
         editTaskForm.reset()
         updateScreen(projectList, content, sidebar, filterList)
     } else {

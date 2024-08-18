@@ -64,6 +64,7 @@ export function createProjectTasks(project, projectIndex) {
 
 export function updateScreen(memory, content, sidebar, include = null) {
 
+    // if null include all projects from memory
     if (include === null) {
         include = [...memory.map((_,i) => i)]
     }
@@ -126,3 +127,5 @@ export function populateInputs(memory, index, subIndex, domElement) {
         input.value = targetTask[input.name] || '';
     })
 }
+
+// export function newTodoFromModal(inputs, )
