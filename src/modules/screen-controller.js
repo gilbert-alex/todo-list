@@ -3,7 +3,7 @@
 import {projectList, filterList} from '../index';
 import Project from './project';
 import Todo from './todo'
-import {updateScreen, populateInputs} from './dom-util'
+import {updateScreen, populateInputs, loadIcons} from './dom-util'
 
 
 const sidebar = document.querySelector('#project-sidebar');
@@ -170,20 +170,5 @@ taskModal.addEventListener('click', e => {
 
 // test to add MDI to add buttons
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('new script run');
-    const btns = document.querySelectorAll('.project>div>button');
-
-    btns.forEach( btn => {
-        // btn.classList.add('test');
-        btn.textContent = '';
-        if (btn.name === 'add') {
-            btn.classList.add('mdi', 'mdi-plus', 'icon');
-        } else if (btn.name === 'delete') {
-            btn.classList.add('mdi', 'mdi-trash-can-outline', 'icon');
-        } else if (btn.name === 'edit') {
-            btn.classList.add('mdi', 'mdi-dots-horizontal', 'icon');
-        }
-    });
+    loadIcons();
 });
-
-console.log('screen controller end');

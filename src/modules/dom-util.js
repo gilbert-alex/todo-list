@@ -28,7 +28,6 @@ export function createProjectHeader(title, index) {
     newHeader.appendChild(newTitle);
     newHeader.appendChild(addBtn);
     newHeader.appendChild(delBtn);
-    console.log('new header made');
     return newHeader
 }
 
@@ -118,6 +117,7 @@ export function updateScreen(memory, content, sidebar, include = null) {
 
     populateSidebar();
     populateContent();
+    loadIcons();
 }
 
 // populate modal input values from memory
@@ -129,4 +129,19 @@ export function populateInputs(memory, index, subIndex, domElement) {
     })
 }
 
-// export function newTodoFromModal(inputs, )
+// replace btn text content with icons
+export function loadIcons() {
+    const btns = document.querySelectorAll('.project>div>button');
+
+    btns.forEach( btn => {
+        // btn.classList.add('test');
+        btn.textContent = '';
+        if (btn.name === 'add') {
+            btn.classList.add('mdi', 'mdi-plus', 'icon');
+        } else if (btn.name === 'delete') {
+            btn.classList.add('mdi', 'mdi-trash-can-outline', 'icon');
+        } else if (btn.name === 'edit') {
+            btn.classList.add('mdi', 'mdi-dots-horizontal', 'icon');
+        }
+    });
+}
